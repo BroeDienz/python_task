@@ -51,12 +51,19 @@ def added_nodle(noodle_pcs):
 # print(added_nodle(1))
 
 """bumbu mie ayam"""
-def add_seasoning(ketchup_ml, sausage_ml, powder_ml):
-    return (ketchup_ml == 3 and sausage_ml ==2 and powder_ml ==3)
-# print(add_seasoning(3,2,3))
-# print (add_seasoning(2,2,3))
-# print (add_seasoning(4,2,3))
+def add_ketchup(ketchup_ml):
+    return (ketchup_ml == 3)
 
+def add_sausage(sausage_pcs):
+    return (sausage_pcs ==2)
+
+def add_powder(powder_ml):
+    return (powder_ml ==3)
+
+# print(add_ketchup(3), add_sausage(2), add_powder(3))
+# print(add_ketchup(3), add_sausage(2), add_powder(1))
+# print(add_ketchup(3), add_sausage(3), add_powder(1))
+# print(add_ketchup(13), add_sausage(22), add_powder(34))
 
 # PART 2 Machine Control
 
@@ -103,7 +110,7 @@ def cook_noodle(cooking_seconds):
     while seconds < cooking_seconds:
         seconds += 1
     if seconds >= cooking_time:
-        # time.sleep(5)
+        time.sleep(5)
         return "MATANG"
     else:
         return "BELUM MATANG"
@@ -112,32 +119,6 @@ def cook_noodle(cooking_seconds):
 cooking_time = 120
 seconds = cook_noodle(cooking_time)
 # print(f"waktu masak  {cooking_time}detik, mie {seconds}")    
-
-
-def dispense_all_seasoning(ketchup_ml=3, sausage_pcs=2, powder_t_spoon=3):
-    add_ketchup = 0
-    add_sausage = 0
-    add_powder = 0
-    
-    while add_ketchup < ketchup_ml:
-        add_ketchup += 1
-        print(f"adding ketchup {add_ketchup}ml")
-        time.sleep(0.5)
-    
-    while add_sausage < sausage_pcs:
-        add_sausage += 1
-        print(f"adding sausage {add_sausage}pcs")
-        time.sleep(0.5)
-    
-    while add_powder < powder_t_spoon:
-        add_powder += 1
-        print(f"adding powder {add_powder}gr")
-        time.sleep(0.5)
-    
-    sesasoning = add_seasoning(add_ketchup, add_sausage, add_powder)
- 
-    return sesasoning
-# print(f"dispense all seasoning", dispense_all_seasoning())
 
 
 def dispense_nodle(noodle_pcs=1):
@@ -150,9 +131,49 @@ def dispense_nodle(noodle_pcs=1):
         noodle = added_nodle(add_noodle)    
         return noodle
 # print(f"dispense noodle", dispense_nodle())
-        
-                            
-# print(f"dispense all seasoning", dispense_all_seasoning())
+
+
+def dispense_ketchup(ketchup_ml=3):
+    added_ketchup = 0
+    
+    while added_ketchup < ketchup_ml:
+        added_ketchup += 1
+        print(f"adding ketchup {added_ketchup}ml")
+        time.sleep(0.5)
+    
+    sesasoning1 = add_ketchup(added_ketchup)
+ 
+    return sesasoning1
+# print(f"dispense ketchup", dispense_ketchup(3))
+
+
+def dispense_sausage(sausage_pcs=2):
+    added_sausage = 0
+    
+    while added_sausage < sausage_pcs:
+        added_sausage += 1
+        print(f"adding sausage {added_sausage}pcs")
+        time.sleep(0.5)
+    
+    sesasoning2 = add_sausage(added_sausage)
+ 
+    return sesasoning2
+# print(f"dispense sausage", dispense_sausage())
+
+
+def dispense_powder(powder_t_spoon=3):
+    added_powder = 0
+    
+    while added_powder < powder_t_spoon:
+        added_powder += 1
+        print(f"adding powder {added_powder}gr")
+        time.sleep(0.5)
+    
+    sesasoning3 = add_powder(added_powder)
+ 
+    return sesasoning3
+# print(f"dispense powder", dispense_powder())
+
 
 
 #PART 3 Complete Machine 
@@ -252,13 +273,13 @@ class WaterSystem:    #✅
 water_system = WaterSystem()
 
 seconds_needed = water_system.fill_bucket(500)
-print(f"water di bucket setelah diisi  {water_system.bucket}ml selama {seconds_needed} detik")
-print("="*50, "\n")
+# print(f"water di bucket setelah diisi  {water_system.bucket}ml selama {seconds_needed} detik")
+# print("="*50, "\n")
 
 print("="*15, "panaskan air", "="*15) 
-seconds_needed = water_system.heat_water(80)
-print(f"suhu air sekarang { water_system.current_temp}C setelah dipanaskan selama {seconds_needed} detik")
-print("="*50, "\n")
+seconds_needed = water_system.heat_water(25)
+# print(f"suhu air sekarang { water_system.current_temp}C setelah dipanaskan selama {seconds_needed} detik")
+# print("="*50, "\n")
 
 # print("="*15, "dinginkan air", "="*15) 
 # seconds_needed = water_system.cool_down(25)
@@ -287,34 +308,26 @@ class Dispenser:     #✅
             dispensed = self.current_amount
             self.current_amount = 0
             return dispensed                           
-
-    # def dispense_nodle(self, noodle_pcs=1): #move to noodle machine
-    #     added_noodle = 0
-    #     while added_noodle < noodle_pcs:
-    #         added_noodle += 1
-    #         print(f"adding noodle {added_noodle}pcs")
-            
-    #     return added_noodle
         
 ketchup = Dispenser("ketchup", capacity=1000, ml_per_trigger=1)
 takaran_ketchup = ketchup.trigger(0)
-print(f"dispensed ketchup:", takaran_ketchup)
-print(f"stock ketchup", ketchup.current_amount)
+# print(f"dispensed ketchup:", takaran_ketchup)
+# print(f"stock ketchup", ketchup.current_amount)
 
 sausage = Dispenser("sausage", capacity=1000, ml_per_trigger=1)
 takaran_sausage = sausage.trigger(0)
-print(f"dispensed sausage:", takaran_sausage)
-print(f"stock sausage", sausage.current_amount)
+# print(f"dispensed sausage:", takaran_sausage)
+# print(f"stock sausage", sausage.current_amount)
 
 powder = Dispenser("powder", capacity=1000, ml_per_trigger=1)
 takaran_powder = powder.trigger(0)
-print(f"dispensed powder:", takaran_powder)
-print(f"stock powder", powder.current_amount)
+# print(f"dispensed powder:", takaran_powder)
+# print(f"stock powder", powder.current_amount)
 
 noodle = Dispenser("noodle", capacity= 50 , ml_per_trigger=1)
 takaran_mie = noodle.trigger(0)
-print(f"dispensed noodle:", takaran_mie)
-print(f"stock noodle", powder.current_amount)
+# print(f"dispensed noodle:", takaran_mie)
+# print(f"stock noodle", powder.current_amount)
 
 def get_dispenser_status(dispenser):
         return f"{dispenser.name} stock: {dispenser.current_amount} ml"
@@ -350,24 +363,33 @@ class NoodleMachine:
         
         print("🔥 memanasakan air 80C")
         self.water_system.heat_water(11)
+        self.water_system.heat_water(80)
         
         print("🍝 masukan mie 1")
         self.takaran_mie = noodle.trigger(1)
+        self.noodle_added = dispense_nodle(
+            noodle_pcs=self.takaran_mie
+        )
         
         print("⏰ memasak mie 2menit")
         self.cooking_status = cook_noodle(120)
+
         
         print("🍅 menambahkan ketchup 3ml")
         self.takaran_ketchup = ketchup.trigger(3)
+        self.seasoning_added = dispense_ketchup(
+            ketchup_ml=self.takaran_ketchup
+        )
         
         print("🌭 menambahkan sausage 2")
         self.takaran_sausage = sausage.trigger(2)
+        self.seasoning_added = dispense_sausage(
+            sausage_pcs=self.takaran_sausage
+        )
         
         print("🧂 menambahkan powder 3ml")
         self.takaran_powder = powder.trigger(3)
-        self.seasoning_added = dispense_all_seasoning(
-            ketchup_ml=self.takaran_ketchup,
-            sausage_pcs=self.takaran_sausage,
+        self.seasoning_added = dispense_powder(
             powder_t_spoon=self.takaran_powder
         )
         
@@ -375,7 +397,7 @@ class NoodleMachine:
         self.noodle_made += 1
         time.sleep(1)
         
-        print("🧹 bucket")
+        print("🧹clean bucket")
         self.water_system.empty_bucket()
         time.sleep(2)
 
