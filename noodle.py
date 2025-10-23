@@ -1,8 +1,41 @@
+import time
+
 """Tuang Air"""
 print ("Tuang Air")
-def open_water_valve(seconds):
-    return seconds * 100
-# print(open_water_valve(3))
+def open_water_valve(water_system, seconds):
+    water_added = 0
+    time_elapsed = 0
+    
+    while time_elapsed < seconds:
+        water_added += 100  # Add 100ml per second
+        water_system["bucket"] += 100
+        water_system["tank"] -= 100
+        time_elapsed += 1
+        # print(f"opening valve... bucket: {water_system['bucket']}ml")
+        # print(f"tank: {water_system['tank']}ml")
+    
+    # print(f"valve open {seconds} seconds, total water added: {seconds * 100}ml")  
+    return water_added
+# print(f"valve open 5 seconds", 
+    #   open_water_valve(water_system={"bucket":0, "tank":5000}, seconds=5))
+
+
+def close_water_valve(water_system, target_fill=500):
+    while water_system["bucket"] > target_fill:
+        water_system["bucket"] -= 100
+        # print(f"closing valve, bucket now: {water_system['bucket']}ml")
+        
+    if water_system["bucket"] > 0:
+        water_system["bucket"] = target_fill
+    else:
+        water_system["bucket"] = 0
+        
+    # print (f"closed valve closed, bucket amounted to: {water_system['bucket']}ml")
+
+    return water_system["bucket"]
+# print(f"valve close whit targe fill", 
+    #   close_water_valve(water_system={"bucket":800, "tank":5000}, target_fill=500))
+    
 
 
 """masak air"""
@@ -24,50 +57,77 @@ def add_seasoning(ketchup_ml, sausage_ml, powder_ml):
 #machine control
 
 def fill_bucket(target_fill):
-    seconds = target_fill // 100
+    total_filled =  0
+    seconds = 0
+    while total_filled < target_fill:
+        total_filled += 100
+        seconds += 1
     return seconds
 
-seconds = fill_bucket(300)
-# print(f"need {seconds} seconds to fill 300ml")
+seconds = fill_bucket(500)
+# print(f"need {seconds} seconds to fill 500ml")
 
-
-def heat_water(target_temp=77, current_temp=25):
-    seconds =  (target_temp - current_temp) //5
+def heat_water(target_temp):
+    current_temp = 25
+    seconds =  0
+    while current_temp < target_temp:
+        current_temp += 5
+        seconds += 1
     return seconds
-seconds = heat_water(80, 60)
-print(f"need {seconds} seconds to heat from 25c to 80c")
+
+seconds = heat_water(80)
+# print(f"need {seconds} seconds to heat from 25c to 80c")
 
 
-def mantain_temperature(current_temp, target_temp=77):
-    if current_temp < target_temp:
-        return "panaskan"
-    if current_temp > target_temp:
-        return "dinginkan"
-    else:
-        return "jaga suhu"
-# print(f"suhu 70", mantain_temperature(70, 77))
-# print(f"suhu 85", mantain_temperature(85, 77))
-# print(f"suhu 77", mantain_temperature(77, 77))
+def mantain_temperature(current_temp, target_temp):
+    while current_temp != target_temp:
+        if current_temp < target_temp:
+            current_temp += 5
+        elif current_temp > target_temp:
+            
+            current_temp -= 50
+    # print(f"maintain temperature at {target_temp}")
+    return current_temp 
+
+# print (f"maintain temperature", mantain_temperature(90, 80))
 
 
 def cook_noodle(cooking_seconds):
     cooking_time = 120
-    if cooking_seconds >= cooking_time:
+    seconds = 0
+    
+    while seconds < cooking_seconds:
+        seconds += 1
+    if seconds >= cooking_time:
         return "READY"
     else:
         return "COOKING"
     
-# print(f"waktu masak 100 detik", cook_noodle(100))
-# print(f"waktu masak 120 detik", cook_noodle(120))
-# print(f"waktu masak 150 detik", cook_noodle(150))
+seconds = cook_noodle(120)
+# print(f"waktu masak 120 detik", seconds)    
 
 
 def dispense_all_seasoning(ketchup_ml=3, sausage_ml=2, powder_ml=3):
-    seasoning = add_seasoning(ketchup_ml, sausage_ml, powder_ml)
-    return seasoning
-seasoning = dispense_all_seasoning()
-print(seasoning)
-
+    add_ketchup = 0
+    add_sausage = 0
+    add_powder = 0
+    
+    while add_ketchup < ketchup_ml:
+        add_ketchup += 1
+        print(f"adding ketchup {add_ketchup}ml")
+    
+    while add_sausage < sausage_ml:
+        add_sausage += 1
+        # print(f"adding sausage {add_sausage}pcs")
+    
+    while add_powder < powder_ml:
+        add_powder += 1
+        # print(f"adding powder {add_powder}gr")
+    
+    sesasoning = add_seasoning(add_ketchup, add_sausage, add_powder)
+    time.sleep(1)
+    return sesasoning                            
+print(f"dispense all seasoning", dispense_all_seasoning())
 
 #complete machine 
 
@@ -77,26 +137,73 @@ class WaterSystem:
         self.bucket = 0
         self.current_temp = 25
 
-    def open_valve(self, seconds):
-        water = seconds * 100
-        self.bucket += water
-        self.tank -= water
+    def open_water_valve(self, seconds):
+        water_added = 0
+        time_elapsed = 0
+    
+        while time_elapsed < seconds:
+            water_added += 100  # Add 100ml per second
+            self.bucket += 100
+            self.tank -= 100
+            time_elapsed += 1
+            # print(f"opening valve... bucket: {self.bucket}ml")
+            # print(f"tank: {self.tank}ml")
+    
+        # print(f"valve open {seconds} seconds, total water added: {seconds * 100}ml")  
+        return water_added
         
-    def close_valve(self):
+    def close_water_valve(self, target_fill=500):
+        while self.bucket > target_fill:
+            self.bucket -= 100
+            # print(f"closing valve, bucket now: {self.bucket}ml")
+        
         if self.bucket > 0:
-            self.bucket = 300
+            self.bucket = target_fill
         else:
             self.bucket = 0
+        
+        # print (f"closed valve closed, bucket amounted to: {self.bucket}ml")
+
+        return self.bucket
     
-    def heat_up(self, seconds):
-        self.current_temp += seconds * 5
-        if self.current_temp > 100:
-            self.current_temp = 100
+    def fill_bucket(self, target_ml):
+        if self.bucket >= target_ml:
+            print(f"bucket already {self.bucket}ml, (target {target_ml}ml)")
+            return 0
+        
+        seconds= 0    
+        standart_filled = self.bucket
+        while standart_filled < target_ml:
+            if self.tank >= 100:
+                standart_filled += 100
+                self.bucket += 100
+                self.tank -= 100
+                seconds += 1
+                print(f"filling... bucket: {self.bucket}ml (filled for {seconds}s)")
+            else:
+                print("isi water tank dulu")
+                self.tank += 5000
+                print(f"isi water tank sampai {self.tank}ml")
+        
+        if self.bucket > target_ml:
+            self.close_water_valve(target_fill=target_ml)
+        return seconds
+        
+    
+    def heat_water(self, target_temp):
+        seconds =  0
+        while self.current_temp < target_temp:
+            self.current_temp += 5
+            seconds += 1
+            print(f"heating... current temp: {self.current_temp}C (tuned for {seconds}s)")
+        return seconds
             
-    def cool_down(self, seconds):
-        self.current_temp -= seconds * 50
-        if self.current_temp < 25:
-            self.current_temp = 25        
+    def cool_down(self, target_temp):
+        seconds = 0
+        while target_temp < self.current_temp:
+            self.current_temp -= 5
+            seconds += 1
+            print(f"cooling... current temp: {self.current_temp}C (cooled for {seconds}s)")      
 
     def empty_bucket(self):
         self.bucket = 0
@@ -109,24 +216,19 @@ class WaterSystem:
         return warning_messages
 
 water_system = WaterSystem()
-# water_system.open_valve(3)
-# print(f"water di bucket", water_system.bucket)
-# print(f"water di tank", water_system.tank)
 
-water_system.close_valve()
-# print(f"water setelah isi bucket ", water_system.bucket)
-# print(f"water di tank setelah isi bucket", water_system.tank)
+seconds_needed = water_system.fill_bucket(500)
+print(f"water di bucket setelah diisi  {water_system.bucket}ml selama {seconds_needed} detik")
 
-water_system.heat_up(11)
-# 
-# print(f"temperatur air setelah dipanaskan ", water_system.current_temp)
+seconds_needed = water_system.heat_water(80)
+print(f"suhu air sekarang { water_system.current_temp}C setelah dipanaskan selama {seconds_needed} detik")
 
-water_system.cool_down(1)
-# print(f"temperatur air setelah didinginkan", water_system.current_temp)
+seconds_needed = water_system.cool_down(1)
+# print(f"temperatur air setelah didinginkan {water_system.current_temp}")
 
 def get_water_status(water_system):
         return f"bucket: {water_system.bucket}ml\ntank: {water_system.tank}ml\ntemp: {water_system.current_temp}C\nmessage: {water_system.check_water_level()}"
-# print(f"status water system", get_water_status(water_system))
+print(f"status water system", get_water_status(water_system))
 
 class Dispenser: 
     def __init__(self, name, capacity, ml_per_trigger=1):
@@ -170,78 +272,89 @@ def get_dispenser_status(dispenser):
 # print(f"status stock di mesin", get_dispenser_status(noodle))
 
 
-class NoodleMachine:
-    def __init__(self):
-        self.water_system = WaterSystem()
-        self.disipensers = Dispenser("ketchup", capacity=1000)
-        self.disipensers = Dispenser("sausage", capacity=1000)
-        self.disipensers = Dispenser("powder", capacity=1000)
-        self.disipensers = Dispenser("noodle", capacity=50)
-        self.noodle_made = 0
+# class NoodleMachine:
+#     def __init__(self):
+#         self.water_system = WaterSystem()
+#         self.disipensers = Dispenser("ketchup", capacity=1000)
+#         self.disipensers = Dispenser("sausage", capacity=1000)
+#         self.disipensers = Dispenser("powder", capacity=1000)
+#         self.disipensers = Dispenser("noodle", capacity=50)
+#         self.noodle_made = 0
         
-    def get_machine_status(self):
-        water_status = get_water_status(self.water_system)
-        ketchup_status = get_dispenser_status(ketchup)
-        sausage_status = get_dispenser_status(sausage)
-        powder_status = get_dispenser_status(powder)
-        noodle_status = get_dispenser_status(noodle)
-        return f"💧{water_status}\n🍅{ketchup_status}\n🌭{sausage_status}\n🧂{powder_status}\n🍜{noodle_status}\nNoodle made: {self.noodle_made}"
+#     def get_machine_status(self):
+#         water_status = get_water_status(self.water_system)
+#         ketchup_status = get_dispenser_status(ketchup)
+#         sausage_status = get_dispenser_status(sausage)
+#         powder_status = get_dispenser_status(powder)
+#         noodle_status = get_dispenser_status(noodle)
+#         return f"💧{water_status}\n🍅{ketchup_status}\n🌭{sausage_status}\n🧂{powder_status}\n🍜{noodle_status}\nNoodle made: {self.noodle_made}"
         
-    def make_noodle(self):
-        print ("💧 add water 500ml")
-        self.water_system.open_valve(5)
+#     def make_noodle(self, add_water=500):
+#         print ("💧 add water with 500 ml")
+#         if not self.water_system.fill_bucket_cooking(add_water):
+#             print("❌ gagal membuat mie, air tidak cukup")
+#             return
+#         time.sleep(3)
         
-        print("🔥 memanasakan air 80C")
-        self.water_system.heat_up(11)
+#         print("🔥 memanasakan air 80C")
+#         self.water_system.heat_up(11)
+#         time.sleep(4)
         
-        print("🍝 masukan mie 1")
-        self.takaran_mie = noodle.trigger(1)
+#         print("🍝 masukan mie 1")
+#         self.takaran_mie = noodle.trigger(1)
+#         time.sleep(1)
         
-        print("⏰ memasak mie 2menit")
-        self.cooking_status = cook_noodle(120)  
+#         print("⏰ memasak mie 2menit")
+#         self.cooking_status = cook_noodle(120)
+#         time.sleep(5)  
         
-        print("🍅 menambahkan ketchup 3ml")
-        self.takaran_ketchup = ketchup.trigger(3)
+#         print("🍅 menambahkan ketchup 3ml")
+#         self.takaran_ketchup = ketchup.trigger(3)
+#         time.sleep(0.3)
         
-        print("🌭 menambahkan sausage 2")
-        self.takaran_sausage = sausage.trigger(2)
+#         print("🌭 menambahkan sausage 2")
+#         self.takaran_sausage = sausage.trigger(2)
+#         time.sleep(0.3)
         
-        print("🧂 menambahkan powder 3ml")
-        self.takaran_powder = powder.trigger(3)
+#         print("🧂 menambahkan powder 3ml")
+#         self.takaran_powder = powder.trigger(3)
+#         time.sleep(0.3)
         
-        print("✅ mie ayam siap disajikan!")
-        self.noodle_made += 1
+#         print("✅ mie ayam siap disajikan!")
+#         self.noodle_made += 1
+#         time.sleep(1)
         
-        print("🧹 bucket")
-        self.water_system.empty_bucket()
+#         print("🧹 bucket")
+#         self.water_system.empty_bucket()
+#         time.sleep(2)
 
 
-machine = NoodleMachine()
-print("🍜 INSTANT NOODLE MAKER MACHINE")
-print("="*50)
+# machine = NoodleMachine()
+# print("🍜 INSTANT NOODLE MAKER MACHINE")
+# print("="*50)
 
-print("\n📊 INITIAL STATUS:")
-print(machine.get_machine_status())
-print()
-print("="*50)
+# print("\n📊 INITIAL STATUS:")
+# print(machine.get_machine_status())
+# print()
+# print("="*50)
 
-print("\n" + "="*50)
-print("🍜 MAKING NOODLE #1...")
-print("="*50)
-machine.make_noodle()
-print("="*50)
+# print("\n" + "="*50)
+# print("🍜 MAKING NOODLE #1...")
+# print("="*50)
+# machine.make_noodle()
+# print("="*50)
 
-print("\n" + "="*50)
-print("🍜 MAKING NOODLE #2...")
-print("="*50)
-machine.make_noodle()
-print("="*50)
+# print("\n" + "="*50)
+# print("🍜 MAKING NOODLE #2...")
+# print("="*50)
+# machine.make_noodle()
+# print("="*50)
 
-print("\n" + "="*50)
-print("🍜 MAKING NOODLE #3...")
-print("="*50)
-machine.make_noodle()
-print("="*50)
+# print("\n" + "="*50)
+# print("🍜 MAKING NOODLE #3...")
+# print("="*50)
+# machine.make_noodle()
+# print("="*50)
 
-print("\n📊 FINAL STATUS:")
-print(machine.get_machine_status())
+# print("\n📊 FINAL STATUS:")
+# print(machine.get_machine_status())
