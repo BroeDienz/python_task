@@ -178,7 +178,6 @@ def dispense_powder(powder_t_spoon=3):
 # print(f"dispense powder", dispense_powder())
 
 
-
 #PART 3 Complete Machine 
 
 class WaterSystem:    #✅
@@ -252,19 +251,21 @@ class WaterSystem:    #✅
         return seconds
         
             
-    # def cool_down(self, target_temp):
-    #     seconds = 0
-    #     while target_temp < self.current_temp :
-    #         self.current_temp -= 5
-    #         seconds += 1
-    #         print(f"cooling... current temp: {self.current_temp}C (cooled for {seconds}s)")
-    #         time.sleep(2)
-    #     return seconds
+    def cool_down(self, target_temp):
+        seconds = 0
+        while target_temp < self.current_temp :
+            self.current_temp -= 5
+            seconds += 1
+            print(f"cooling... current temp: {self.current_temp}C (cooled for {seconds}s)")
+            time.sleep(2)
+        return seconds
+
 
     def empty_bucket(self):
         self.bucket = 0
         time.sleep(1)
         return self.bucket
+
         
     def check_water_level(self):
         if self.tank >= 500:
@@ -422,17 +423,17 @@ print("="*50)
 machine.make_noodle()
 print("="*50)
 
-# print("\n" + "="*50)
-# print("🍜 MAKING NOODLE #2...")
-# print("="*50)
-# machine.make_noodle()
-# print("="*50)
+print("\n" + "="*50)
+print("🍜 MAKING NOODLE #2...")
+print("="*50)
+machine.make_noodle()
+print("="*50)
 
-# print("\n" + "="*50)
-# print("🍜 MAKING NOODLE #3...")
-# print("="*50)
-# machine.make_noodle()
-# print("="*50)
+print("\n" + "="*50)
+print("🍜 MAKING NOODLE #3...")
+print("="*50)
+machine.make_noodle()
+print("="*50)
 
 print("\n📊 FINAL STATUS:")
 print(machine.get_machine_status())
