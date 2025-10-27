@@ -1,7 +1,7 @@
 import time
 
 """Tuang Air"""
-print ("Tuang Air")
+# print ("Tuang Air")
 def open_water_valve(water_system, seconds):
     water_added = 0
     time_elapsed = 0
