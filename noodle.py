@@ -45,7 +45,7 @@ def is_temperature_ok(current_temp):
 # print(is_temperature_ok(78))
 # print (is_temperature_ok(60))
 
-"""tambah mie"""
+"""mie"""
 def added_nodle(noodle_pcs):
     return noodle_pcs == 1
 # print(added_nodle(1))
@@ -67,6 +67,7 @@ def add_powder(powder_ml):
 
 # PART 2 Machine Control
 
+"""isi air di ember"""
 def fill_bucket(target_fill):
     total_filled =  0
     seconds = 0
@@ -78,6 +79,7 @@ def fill_bucket(target_fill):
 seconds = fill_bucket(500)
 # print(f"need {seconds} seconds to fill 500ml")
 
+"""panaskan air"""
 def heat_water(target_temp):
     current_temp = 25
     seconds =  0
@@ -90,6 +92,7 @@ seconds = heat_water(80)
 # print(f"need {seconds} seconds to heat from 25c to 80c")
 
 
+"""jaga temperatur air"""
 def mantain_temperature(current_temp, target_temp):
     while current_temp != target_temp:
         if current_temp < target_temp:
@@ -103,24 +106,24 @@ def mantain_temperature(current_temp, target_temp):
 # print (f"maintain temperature", mantain_temperature(90, 80))
 
 
+"""masak mie"""
 def cook_noodle(cooking_seconds):
-    cooking_time = 120
+    cooking_time = 0
     seconds = 0
-    
-    while seconds < cooking_seconds:
+    while cooking_time < cooking_seconds:
+        cooking_time += 1
         seconds += 1
-    if seconds >= cooking_time:
-        time.sleep(5)
-        return "MATANG"
-    else:
-        return "BELUM MATANG"
+        print (f"cooking... {seconds}s")
+        time. sleep(0.04)
+    return seconds
     
     
-cooking_time = 120
-seconds = cook_noodle(cooking_time)
+# cooking_time = 120
+# seconds = cook_noodle(cooking_time)
 # print(f"waktu masak  {cooking_time}detik, mie {seconds}")    
 
 
+"""dispense mie dan bumbu"""
 def dispense_nodle(noodle_pcs=1):
         add_noodle = 0
         while add_noodle < noodle_pcs:
@@ -272,11 +275,11 @@ class WaterSystem:    #✅
 
 water_system = WaterSystem()
 
-seconds_needed = water_system.fill_bucket(500)
+# seconds_needed = water_system.fill_bucket(500)
 # print(f"water di bucket setelah diisi  {water_system.bucket}ml selama {seconds_needed} detik")
 # print("="*50, "\n")
 
-print("="*15, "panaskan air", "="*15) 
+# print("="*15, "panaskan air", "="*15) 
 seconds_needed = water_system.heat_water(25)
 # print(f"suhu air sekarang { water_system.current_temp}C setelah dipanaskan selama {seconds_needed} detik")
 # print("="*50, "\n")
@@ -286,11 +289,12 @@ seconds_needed = water_system.heat_water(25)
 # print(f"temperatur air setelah didinginkan {water_system.current_temp}c selama {seconds_needed} detik")
 # print("="*50, "\n")
 
-print("="*15, "water system status", "="*15) 
+# print("="*15, "water system status", "="*15) 
 def get_water_status(water_system):
+        time. sleep(0.5)
         return f"bucket: {water_system.bucket}ml\ntank: {water_system.tank}ml\ntemp: {water_system.current_temp}C\nmessage: {water_system.check_water_level()}"
-print(f"status water system", get_water_status(water_system))
-print("="*50, "\n")
+# print(f"status water system", get_water_status(water_system))
+# print("="*50, "\n")
 
 class Dispenser:     #✅
     def __init__(self, name, capacity, ml_per_trigger=1):
@@ -330,6 +334,7 @@ takaran_mie = noodle.trigger(0)
 # print(f"stock noodle", powder.current_amount)
 
 def get_dispenser_status(dispenser):
+        time.sleep(0.5)
         return f"{dispenser.name} stock: {dispenser.current_amount} ml"
 
 # print(f"status stock di mesin", get_dispenser_status(ketchup))
@@ -362,7 +367,6 @@ class NoodleMachine:
             return
         
         print("🔥 memanasakan air 80C")
-        self.water_system.heat_water(11)
         self.water_system.heat_water(80)
         
         print("🍝 masukan mie 1")
@@ -381,13 +385,13 @@ class NoodleMachine:
             ketchup_ml=self.takaran_ketchup
         )
         
-        print("🌭 menambahkan sausage 2")
+        print("🌭 menambahkan sausage 2pcs")
         self.takaran_sausage = sausage.trigger(2)
         self.seasoning_added = dispense_sausage(
             sausage_pcs=self.takaran_sausage
         )
         
-        print("🧂 menambahkan powder 3ml")
+        print("🧂 menambahkan powder 3gr")
         self.takaran_powder = powder.trigger(3)
         self.seasoning_added = dispense_powder(
             powder_t_spoon=self.takaran_powder
@@ -405,6 +409,7 @@ class NoodleMachine:
 machine = NoodleMachine()
 print("🍜 INSTANT NOODLE MAKER MACHINE")
 print("="*50)
+time.sleep(1)
 
 print("\n📊 INITIAL STATUS:")
 print(machine.get_machine_status())
