@@ -222,7 +222,7 @@ def manual_partrol_harvest(robot, farm):
             farm.display(robot.x, robot.y)
             print(robot.get_status())
             if harvested:
-                print("wheat harvested!")
+                print("harvested!")
             else:
                 print("no wheat to harvest here.")
             time.sleep(0.4)  
