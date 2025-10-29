@@ -97,25 +97,16 @@ def find_nearest_wheat(farm_map, robot_x, robot_y):
 # - Robot class
 class Robot:   
     def __init__(self):
-        # TODO: Initialize robot at position (0, 0)
         self.x = 0
         self.y = 0
-        # TODO: Set energy to 100
         self.energy = 100
-        # TODO: Set wheat_collected to 0
         self.wheat_collected = 0
 
     
     def get_position(self):
-        # TODO: Return tuple (x, y) of current position
         return (self.x, self.y) 
     
     def move(self, direction):
-        # TODO: Calculate new position based on direction
-        # TODO: Check if valid using is_valid_position()
-        # TODO: If valid, update x and y, reduce energy
-        # TODO: Return True/False
-        
         new_x, new_y = self.x, self.y
         if direction == "UP":
             new_y -= 1
@@ -137,10 +128,6 @@ class Robot:
             return False
     
     def harvest(self, farm_map):
-    
-        # TODO: Check if wheat at current position
-        # TODO: If yes, remove it and increase counter
-        # TODO: Return True/False
         if farm_map.get_cell(self.x, self.y) == 1:
             if farm_map.remove_wheat(self.x, self.y):
                 self.wheat_collected += 1
@@ -148,9 +135,6 @@ class Robot:
         return False
     
     def get_status(self):
-        """Returns formatted status string"""
-        # TODO: Return something like:
-        # "Robot at (3, 4) | Energy: 85 | Wheat: 5"
         return f"Robot at ({self.x}, {self.y}) | Energy: {self.energy} | Wheat: {self.wheat_collected}"
 
 # - move_robot_to()
@@ -210,40 +194,53 @@ def move_robot_to(robot, farm, target_x, target_y):
 def manual_partrol_harvest(robot, farm):
     
     print("\n manual patrol and harvest \n")
-    
-    farm.display(robot.x, robot.y)
     harvest = 1
     
     while farm.count_remaining_wheat() > 0 and robot.energy > 0:
         print(f"\n--- harvest roound {harvest} ---\n")
         print(f"wheat remaning on farm: {farm.count_remaining_wheat()}")
+        farm.display(robot.x, robot.y)
         print(robot.get_status())
         
         #manual move to target
-        event = input("Enter direction (up/w/left/a/down/s/right/d or esc): ").strip().lower()
+        event = input("Enter direction (w/a/s/d/g or e ): ").strip().lower()
         moved = False
-        if event == "up" and "w":
+        if event == ("w"):
             moved = robot.move("UP")
-        elif event == "down" and "s":
+            
+        elif event == ("s"):
             moved = robot.move("DOWN")
-        elif event == "left" and "a":
+            
+        elif event == ("a"):
             moved = robot.move("LEFT")
-        elif event == "right" and "d":
+            
+        elif event == ("d"):
             moved = robot.move("RIGHT")
-        elif event == "esc":
+            
+        elif event == "g":
+            harvested = robot.harvest(farm)
+            farm.display(robot.x, robot.y)
+            print(robot.get_status())
+            if harvested:
+                print("wheat harvested!")
+            else:
+                print("no wheat to harvest here.")
+            time.sleep(0.4)  
+            continue
+            
+        elif event == "e":
             print("quitting manual patrol.")
             break
         
         # harvest wheat
         if moved:
             farm.display(robot.x, robot.y)
-            if robot.harvest(farm):
-                print("wheat harvested!")
-            else:
-                print("no wheat to harvest here.")
+            print(robot.get_status())
+            time.sleep(0.4)
         else:
-            if event in ["up", "down", "left", "right", "w", "a", "s", "d"]:
+            if event in ["w", "s", "a", "d", "g", "e"]:
                 print("cannot move in that direction.")
+            time.sleep(0.4)
                 
         
         harvest += 1
@@ -263,7 +260,7 @@ print(robot.get_status())
 print(f"Wheat on map: {farm.count_remaining_wheat()}")
 
 print("\n" + "="*50)
-print("🚜 STARTING AUTOMATIC HARVEST...")
+print("🚜 STARTING MANUAL HARVEST...")
 print("="*50 + "\n")
 
 manual_partrol_harvest(robot, farm)
