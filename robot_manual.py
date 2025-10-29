@@ -224,12 +224,12 @@ def manual_partrol_harvest(robot, farm):
             if harvested:
                 print("harvested!")
             else:
-                print("no wheat to harvest here.")
+                print("no wheat to harvest")
             time.sleep(0.4)  
             continue
             
         elif event == "e":
-            print("quitting manual patrol.")
+            print("quit manual patrol.")
             break
         
         # harvest wheat

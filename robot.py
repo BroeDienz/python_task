@@ -72,29 +72,11 @@ class FarmMap:
 ### Task 1.1: Check Valid Position
 # - Checks if position (x, y) is inside the map (0 to 8)
 # - Returns `True` if valid, `False` if outside
-def is_valid_position(x, y) :
-    map_size = 9
-    if 0 <= x < map_size and 0 <= y < map_size:
-        return True
-    else:
-        return False
-
-print(is_valid_position(5, 5))   # Output: True
-print(is_valid_position(0, 7))   # Output: True
-print(is_valid_position(9, 5))   # Output: False
-print(is_valid_position(-1, 5))  # Output: False
-
 
 ## Task 1.2: Calculate Distance
 # - Calculates Manhattan distance between two points
 # - Formula: |x2 - x1| + |y2 - y1|
 # - Returns the distance
-def calculate_distance(x1, y1, x2, y2):
-    distance = abs(x2 - x1) + abs(y2 - y1)
-    return distance
-
-distance = calculate_distance(0, 0, 3, 4)
-print(distance)  # Output: 7
 
 
 ### Task 1.3: Find Nearest Wheat
@@ -103,25 +85,10 @@ print(distance)  # Output: 7
 # - Use `farm_map.get_cell(x, y)` to check each cell (returns 1 if wheat)
 # - Returns (x, y) tuple of nearest wheat
 # - Returns None if no wheat found
-def find_nearest_wheat(farm_map, robot_x, robot_y):
-    min_distance = 999
-    nearest_wheat = None
-    
-    for x in range(9):
-        for y in range(9):
-            if farm_map.get_cell(x, y) == 1:  # Found wheat
-                distance = calculate_distance(robot_x, robot_y, x, y)
-                if distance < min_distance:
-                    min_distance = distance
-                    nearest_wheat = (x, y)
-    
-    return nearest_wheat
 
 # **Exa÷mple**:
 # ```python
-farm = FarmMap(num_wheat=5)
-nearest = find_nearest_wheat(farm, 0, 0)
-print(nearest)  # Output: (2, 0) or whatever is closest
+# Output: (2, 0) or whatever is closest
 # ```
 
 # **Hint**: Loop through all positions (0-8 for both x and y), check each cell, calculate distance, keep track of the closest one.
@@ -135,104 +102,25 @@ print(nearest)  # Output: (2, 0) or whatever is closest
 # Create a class with these specifications:
 
 # ```python
-class Robot:
-    """
-    Properties:
-    - x: int (current x position, starts at 0)
-    - y: int (current y position, starts at 0)
-    - energy: int (battery level, starts at 100)
-    - wheat_collected: int (starts at 0)
-    
-    Methods to implement:
-    - __init__(self)
-    - get_position(self)
-    - move(self, direction)
-    - harvest(self, farm_map)
-    - get_status(self)
-    """
-    
-    def __init__(self):
         # TODO: Initialize robot at position (0, 0)
-        self.x = 0
-        self.y = 0
         # TODO: Set energy to 100
-        self.energy = 100
         # TODO: Set wheat_collected to 0
-        self.wheat_collected = 0
-
-    
-    def get_position(self):
         # TODO: Return tuple (x, y) of current position
-        return (self.x, self.y) 
-    
-    def move(self, direction):
         # TODO: Calculate new position based on direction
         # TODO: Check if valid using is_valid_position()
         # TODO: If valid, update x and y, reduce energy
         # TODO: Return True/False
-        
-        new_x, new_y = self.x, self.y
-        if direction == "UP":
-            new_y -= 1
-        elif direction == "DOWN":
-            new_y += 1
-        elif direction == "LEFT":
-            new_x -= 1
-        elif direction == "RIGHT":
-            new_x += 1
-        else:
-            return False  # Invalid direction
-        
-        if is_valid_position(new_x, new_y):
-            self.x = new_x
-            self.y = new_y
-            self.energy -= 1
-            return True
-        else:
-            return False
-    
-    def harvest(self, farm_map):
-    
         # TODO: Check if wheat at current position
         # TODO: If yes, remove it and increase counter
         # TODO: Return True/False
-        if farm_map.get_cell(self.x, self.y) == 1:
-            if farm_map.remove_wheat(self.x, self.y):
-                self.wheat_collected += 1
-                return True
-        return False
-    
-    def get_status(self):
-        """Returns formatted status string"""
         # TODO: Return something like:
         # "Robot at (3, 4) | Energy: 85 | Wheat: 5"
-        return f"Robot at ({self.x}, {self.y}) | Energy: {self.energy} | Wheat: {self.wheat_collected}"
+        
     
 # ```
 
 # **Test Your Robot**:
 # ```python
-print("\n--- TESTING ROBOT CLASS ---\n")
-
-farm = FarmMap(num_wheat=5)
-robot = Robot()
-
-print(f"get robot status",robot.get_status())
-print(f"get robot position",robot.get_position())  # Should be (0, 0)
-
-print("Robot Moving RIGHT...")
-robot.move("RIGHT")
-print(robot.get_position())  # Should be (1, 0)
-print(robot.energy)          # Should be 99
-
-print("Moving Robot DOWN twice...")
-robot.move("DOWN")
-robot.move("DOWN")
-print(robot.get_position())  # Should be (1, 2)
-
-result = robot.harvest(farm)
-print(f"Harvested: {result}")
-print(robot.get_status())
 # ```
 
 # ---
@@ -268,58 +156,7 @@ print(robot.get_status())
 # **Hint**:
 # ```python
 # # Move horizontally
-def move_robot_to(robot, target_x, target_y):
-    print(f"moving target from {robot.get_position()} to ({target_x}, {target_y})")
-    
-    if robot.x == target_x and robot.y == target_y:
-        print("Arrived at target!")
-        return True
-    
-    # move horizontally X
-    while robot.x != target_x and robot.energy > 0:
-        if robot.x < target_x:
-            if robot.move("RIGHT"):
-                print(f"Moving Right, now at {robot.get_position()}")
-            else:
-                print("Cannot move Right, stopping.")
-                return False
-        else:
-            if robot.move("LEFT"):
-                print(f"Moving Left... now at {robot.get_position()}")
-            else:
-                print("Cannot move Left, stopping.")
-                return False
-        farm.display(robot.x, robot.y)
-        time. sleep(0.4)  
-        print(robot.get_status())
-    
-    # move vertically Y
-    while robot.y != target_y and robot.energy > 0:
-        if robot.y < target_y:
-            if robot.move("DOWN"):
-                print(f"moving Down, now at {robot.get_position()}")
-            else:
-                print("cannot move Down, stopping.")
-                return False
-        else:
-            if robot.move("UP"):
-                print (f"moving Up, now at {robot.get_position()}")
-            else:
-                print("canoot move Up, stopping.")
-                return False
-        farm.display(robot.x, robot.y)
-        time. sleep(0.4)  
-        print(robot.get_status())    
-            
-            
-    # Check if arrived
-    if robot.x == target_x and robot.y == target_y:
-        print("arrived at target!")
-        return True
-    else:
-        print("cannot reach target, out of energy.")
-        return False
-    
+
          
 # ### Task 3.2: Automatic Patrol and Harvest (MAIN CHALLENGE!)
 
@@ -340,77 +177,9 @@ def move_robot_to(robot, target_x, target_y):
 #    d. Harvest the wheat using robot.harvest()
    
 #    e. Print status
-
-def auto_partrol_harvest(robot, farm):
-    
-    print("\n automated patrol and harvest \n")
-    
-    harvest = 1
-    
-    while farm.count_remaining_wheat() > 0 and robot.energy > 0:
-        print(f"\n--- harvest roound {harvest} ---\n")
-        print(f"wheat remaning on farm: {farm.count_remaining_wheat()}")
-        print(robot.get_status())
-        
-        nearest = find_nearest_wheat(farm, robot.x, robot.y)
-        
-        # search near wheat
-        if nearest is None:
-            print("no wheat found")
-            break
-        
-        target_x, target_y = nearest
-        print(f"target wheat ({target_x, target_y})")
-        
-        
-        # Move to wheat
-        success = move_robot_to(robot, target_x, target_y)
-        if not success:
-            print("robot cannot reach wheat, stopping patrol.")
-            break
-        
-        # harvest wheat
-        if robot.harvest(farm):
-            print(f"harvested wheat! total: {robot.wheat_collected}")
-        else:
-            print("no wheat to harvest here.")
-        
-        harvest += 1
-    print("\n--- patrol and harvest complete ---\n")
-    print(f"final position: {robot.get_position()}")
     
     
 # 2. Print final summary
-print("\n--- patrol and harvest complete ---\n")
-print(f"final position: {robot.get_position()}")
-print(f"energy left: {robot.energy}")
-print(f"total wheat collected: {robot.wheat_collected}")
-print(f"remaining wheat on farm: {farm.count_remaining_wheat()}")
-print (f"get robot status: {robot.get_status()}")
-
-if farm.count_remaining_wheat() == 0:
-    print("\n✅ success all wheat harvested!")
-elif robot.energy == 0:
-    print("\n⚠️ robot energy is drained!")
-else:
-    print("\n⚠️ stoped cannot reach more wheat!")
-
-
-robot = Robot()
-farm = FarmMap(num_wheat=5)
-
-print("Initial Map:")
-farm.display(robot.x, robot.y)
-print(robot.get_status())
-
-auto_partrol_harvest(robot, farm)
-
-print("\nFinal Map:")
-farm.display(robot.x, robot.y)
-print(robot.get_status())
-print(f"Wheat remaining: {farm.count_remaining_wheat()}")
-
-# **Expected Output**:
 # ```
 # Initial Map:
 #     0   1   2   3   4   5   6   7   8
