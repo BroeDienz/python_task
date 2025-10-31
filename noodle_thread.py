@@ -354,59 +354,49 @@ class Coocking(threading.Thread):
         
     def coock_noodle(self):
         #start cooking noodle for 120 seconds
-        self.coock_status = cook_noodle(120)
+        cooking_seconds = 120
+        cooking_time = 0
+        seconds = 0
+        while cooking_time < cooking_seconds:
+            cooking_tim += 1
+            seconds += 1
             
-    #dispense ketchup 3ml
-    def add_ketchup(self):
-        self.takaran_ketchup = ketchup.trigger(3)
-        self.seasoning_added = dispense_ketchup(
-            ketchup_ml=self.takaran_ketchup
-        )
+            #dispense ketchup 3ml
+            if cooking_time == 10:
+                self.takaran_ketchup = ketchup.trigger(3)
+                self.seasoning_added = dispense_ketchup(
+                    ketchup_ml=self.takaran_ketchup
+                )
         
-    #maintain temperature 75-80C
-    def maintain_temp_up(self):
-        self.matain_temp = mantain_temperature(
-            current_temp=70, target_temp=80
-        )
+            #maintain temperature 75-80C
+            if cooking_time == 15:
+                self.matain_temp = mantain_temperature(
+                    current_temp=70, target_temp=80
+                )
         
-    #dispense sausage 2pcs
-    def add_sausage(self):
-        self.takaran_sausage = sausage.trigger(2)
-        self.seasoning_added = dispense_sausage(
-            sausage_pcs=self.takaran_sausage
-        )
+            #dispense sausage 2pcs
+            if cooking_time == 25:
+                self.takaran_sausage = sausage.trigger(2)
+                self.seasoning_added = dispense_sausage(
+                    sausage_pcs=self.takaran_sausage
+                )
         
-    #mantain temperature 95-80C
-    def maintain_temp_down(self):
-        self.mantain_temp = mantain_temperature(
-            current_temp=100, target_temp=80)
+            #mantain temperature 95-80C
+            if cooking_time == 45:
+                self.mantain_temp = mantain_temperature(
+                    current_temp=100, target_temp=80)
         
-    #dispense powder 3 gr
-    def add_powder(self):
-        self.takaran_powder = powder.trigger(3)
-        self.seasoning_added = dispense_powder(
-            powder_t_spoon=self.takaran_powder
-        )
+            #dispense powder 3 gr
+            if cooking_time == 55:
+                self.takaran_powder = powder.trigger(3)
+                self.seasoning_added = dispense_powder(
+                    powder_t_spoon=self.takaran_powder
+                )
         
     def run(self):
         t1 = threading.Thread(target=self.coock_noodle, daemon=True)
-        t2 = threading.Thread(target=self.add_ketchup, daemon=True)
-        t3 = threading.Thread(target=self.maintain_temp_up, daemon=True)
-        t4 = threading.Thread(target=self.add_sausage, daemon=True)
-        t5 = threading.Thread(target=self.maintain_temp_down, daemon=True)
-        t6 = threading.Thread(target=self.add_powder, daemon=True)
         t1.start()
-        t2.start()
-        t3.start()
-        t4.start()
-        t5.start()
-        t6.start()
         t1.join()
-        t2.join()
-        t3.join()
-        t4.join()
-        t5.join()
-        t6.join()
         
 cooker = Coocking()
 cooker.run()        
